@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>PMKT Alert</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="PMKT Alert – xem cảnh báo, Performance Review và Hourly của team trên điện thoại.">
+<meta name="theme-color" content="#1E40AF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PMKT Alert">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="web.css">
+</head>
+<body>
+<div id="web-splash" role="status" aria-live="polite"><div class="box">
+  <img src="icons/icon-192.png" alt=""><div class="name">PMKT <b>Alert</b></div><div class="bar"></div>
+  <div id="web-splash-text">Đang khởi động…</div>
+  <button class="btn" id="web-splash-retry" hidden onclick="location.reload()">Thử lại</button>
+</div></div>
+<svg width="0" height="0" style="position:absolute">
+ <symbol id="play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+ <symbol id="bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+ <symbol id="scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+ <symbol id="book" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></symbol>
+ <symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+ <symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+ <symbol id="lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+ <symbol id="screen" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><polygon points="10 7 15 10 10 13 10 7"/></symbol>
+ <symbol id="grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="18" height="7" rx="1"/></symbol>
+ <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></symbol>
+ <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></symbol>
+ <symbol id="trend" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></symbol>
+ <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></symbol>
+ <symbol id="cols" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/><path d="M15 4v16"/></symbol>
+ <symbol id="eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+ <symbol id="file" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></symbol>
+ <symbol id="flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></symbol>
+ <symbol id="spark" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></symbol>
+ <symbol id="refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+ <symbol id="copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+ <symbol id="x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+ <symbol id="chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+ <symbol id="alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+ <symbol id="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+ <symbol id="pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.38 3.62a2.12 2.12 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86Z"/></symbol>
+ <symbol id="ext" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+<symbol id="chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16v-5"/><path d="M12 16V7"/><path d="M17 16v-8"/></symbol>
+ <symbol id="folder" viewBox="0 0 24 24"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></symbol>
+ <symbol id="download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></symbol>
+</svg>
+
+<header>
+  <div class="brand"><svg class="i" aria-hidden="true"><use href="#bell"/></svg><span>PMKT <b>Alert</b></span></div>
+  <span class="run-meta" id="run-meta">Chưa chạy dữ liệu</span>
+  <span class="sp"></span>
+  <select id="team-switch" class="hidden" aria-label="Nhóm đang làm việc" title="Nhóm đang làm việc – mỗi nhóm có dữ liệu, logic và Ads profile riêng"></select>
+  <button class="pill" id="role-badge" style="background:var(--muted-bg);color:var(--muted);border:0;cursor:pointer" title="Cài đặt → Nhóm"></button>
+  <span class="pill warn" id="cc-pill" data-lead title="" role="button" tabindex="0" style="cursor:pointer"><span class="dot"></span><span id="cc-text">Claude Code: Đang kiểm tra…</span></span>
+  <button class="btn sm" id="cc-recheck" data-lead title="Kiểm tra lại Claude Code" aria-label="Kiểm tra lại"><svg class="i" aria-hidden="true"><use href="#refresh"/></svg><span class="hl">Kiểm tra lại</span></button>
+  <button class="btn sm" id="gy-open" title="Gửi lỗi hoặc góp ý cho người làm app" aria-label="Góp ý"><svg class="i" aria-hidden="true"><use href="#mail"/></svg><span class="hl">Góp ý</span></button>
+  <span class="zoom" role="group" aria-label="Thu phóng"><button class="btn sm ghost" id="zoom-out" title="Thu nhỏ (Ctrl −)" aria-label="Thu nhỏ">−</button><button class="btn sm ghost num" id="zoom-reset" title="Về 100% (Ctrl 0)" data-no-i18n>100%</button><button class="btn sm ghost" id="zoom-in" title="Phóng to (Ctrl +)" aria-label="Phóng to">+</button></span>
+  <button class="btn sm ghost" id="lang" aria-label="Đổi ngôn ngữ / Switch language" data-no-i18n>EN</button>
+  <button class="btn sm ghost" id="theme" aria-label="Đổi giao diện sáng/tối">◐</button>
+</header>
+
+<nav aria-label="Điều hướng chính">
+  <button title="Chạy dữ liệu" data-go="run" aria-current="page" data-lead><svg class="i" aria-hidden="true"><use href="#play"/></svg><span class="nl">Chạy dữ liệu</span></button>
+  <button title="Kết quả" data-go="results"><svg class="i" aria-hidden="true"><use href="#bell"/></svg><span class="nl">Kết quả</span><span class="count hidden" id="nav-results"></span></button>
+  <button title="Performance Review" data-go="perf"><svg class="i" aria-hidden="true"><use href="#trend"/></svg><span class="nl">Performance Review</span></button>
+  <button title="Hourly" data-go="hourly"><svg class="i" aria-hidden="true"><use href="#clock"/></svg><span class="nl">Hourly</span></button>
+  <!-- Trình chiếu tạm ẩn (tiết kiệm token Claude): bỏ `hidden` để bật lại -->
+  <button title="Trình chiếu" data-go="present" hidden><svg class="i" aria-hidden="true"><use href="#screen"/></svg><span class="nl">Trình chiếu</span></button>
+  <button title="Dashboard đội" data-go="dashboard"><svg class="i" aria-hidden="true"><use href="#chart"/></svg><span class="nl">Dashboard đội</span></button>
+  <button title="Rà soát logic" data-go="review" data-lead><svg class="i" aria-hidden="true"><use href="#scale"/></svg><span class="nl">Rà soát logic</span><span class="count med hidden" id="nav-review"></span></button>
+  <button title="Bài học & Lịch sử" data-go="lessons"><svg class="i" aria-hidden="true"><use href="#book"/></svg><span class="nl">Bài học & Lịch sử</span></button>
+  <div class="sep"></div>
+  <button title="Cài đặt" data-go="settings"><svg class="i" aria-hidden="true"><use href="#gear"/></svg><span class="nl">Cài đặt</span></button>
+  <button id="nav-mini" class="nav-mini" title="Thu gọn / mở rộng menu" aria-label="Thu gọn menu" aria-expanded="true"><svg class="i" aria-hidden="true"><use href="#chev"/></svg><span class="nl">Thu gọn</span></button>
+</nav>
+
+<main>
+<div class="banner upd-pop hidden" id="upd-banner" role="status"><svg class="i" style="color:var(--primary)" aria-hidden="true"><use href="#spark"/></svg><span id="upd-text" style="flex:1"></span><button class="btn sm ghost" aria-label="Để sau" id="upd-later"><svg class="i"><use href="#x"/></svg></button><div class="upd-actions"><button class="btn sm" id="upd-whatsnew">Có gì mới?</button><button class="btn sm primary" id="upd-now">Cập nhật</button></div></div>
+
+<section id="run" class="on">
+  <h1>Chạy dữ liệu</h1>
+  <p class="sub">Kéo thả file .xlsx / .csv vào cửa sổ, hoặc chọn file / thư mục. File logic (Alert_Logic) phải là .xlsx. Có thể thêm từng file – app nhận diện theo nội dung, không theo tên.</p>
+  <div class="grid g2" id="drop-zone" data-drop-label="Thả file vào đây để thêm">
+    <div id="slots-pending" class="pending-files"></div>
+    <div class="card">
+      <h2>Data (cập nhật hằng ngày)</h2>
+      <div id="slots-data"></div>
+      <p class="muted" style="font-size:12px;margin:8px 0 0">Dữ liệu hằng ngày tự đến: bấm Sync (OneDrive) một lần ở các thư mục SharePoint chứa file nguồn của nhóm (danh sách bên dưới) – app tự tìm các file này trong thư mục OneDrive, tự tính Listing Issue và Current Stock, và tự lấy Activity Log từ Ads mỗi lần Chạy. File Data chỉ còn dùng cho Product Info, KPI (target), Summary. Không vào được thư mục (chỉ được chia sẻ từng file): bấm Add shortcut to My files ở từng file, rồi bấm Lấy file SharePoint một lần để đăng nhập – từ đó mỗi lần Chạy app tự tải file.</p>
+      <div id="team-files" class="muted" style="font-size:12px;margin:6px 0 0"></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px">
+        <button class="btn sm" id="act-fetch"><svg class="i" aria-hidden="true"><use href="#file"/></svg>Lấy Activity Log từ Ads</button>
+        <button class="btn sm" id="sp-fetch"><svg class="i" aria-hidden="true"><use href="#file"/></svg>Lấy file SharePoint</button>
+        <span class="muted" id="act-status" style="font-size:12px"></span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Setting</h2>
+      <div id="slots-setting"></div>
+      <div style="display:flex;gap:8px;margin-top:14px;align-items:center;flex-wrap:wrap">
+        <label for="as-of" style="margin:0">As-of</label><input type="date" id="as-of" style="width:150px">
+        <label style="display:flex;gap:6px;align-items:center;margin:0;font-weight:500;color:var(--fg)"><input type="checkbox" id="use-claude" checked> Dùng Claude</label>
+        <label style="display:flex;gap:6px;align-items:center;margin:0;font-weight:500;color:var(--fg)" title="5 bước/PIC: dữ kiện → nháp → kiểm tra → biên tập → kiểm tra lại. Chậm hơn ~2 lần."><input type="checkbox" id="careful" checked> Chế độ kỹ</label>
+        <span style="flex:1"></span>
+        <button class="btn" id="pick-files"><svg class="i" aria-hidden="true"><use href="#file"/></svg>Chọn file…</button>
+        <button class="btn" id="pick"><svg class="i" aria-hidden="true"><use href="#folder"/></svg>Chọn thư mục…</button>
+        <button class="btn primary" id="run-btn" disabled><svg class="i" aria-hidden="true"><use href="#play"/></svg>Chạy</button>
+        <button class="btn hidden" id="stop-btn" style="border-color:var(--high);color:var(--high)"><svg class="i" aria-hidden="true"><use href="#x"/></svg>Dừng</button>
+      </div>
+      <p class="muted" id="input-error" style="font-size:12px;color:var(--high)"></p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h2>Tiến trình</h2>
+    <div id="progress"><div class="muted" style="font-size:13px">Chưa chạy.</div></div>
+  </div>
+</section>
+
+<section id="results">
+  <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+    <div><h1>Kết quả</h1><p class="sub" style="margin:0">Tổng hợp theo PIC · bấm dòng PL để xem campaign <span id="published-line"></span></p></div>
+    <span style="flex:1"></span>
+    <div style="width:240px"><label for="pic">PIC</label><select id="pic"></select></div>
+    <select class="viewer-only" id="report-list" aria-label="Chọn báo cáo" style="width:auto;max-width:280px"></select>
+    <button class="btn viewer-only" id="reload-pmkt" title="Tải lại danh sách báo cáo"><svg class="i" aria-hidden="true"><use href="#refresh"/></svg>Làm mới</button>
+    <button class="btn viewer-only ghost" id="save-pmkt" title="Lưu báo cáo đang chọn ra máy (vẫn được mã hoá)"><svg class="i" aria-hidden="true"><use href="#download"/></svg>Lưu file .pmkt</button>
+    <button class="btn viewer-only ghost" id="open-pmkt">Mở file .pmkt…</button>
+    <button class="btn primary" id="upload-btn" data-lead title="Mã hoá theo từng PIC, ký và tải lên cho nhóm"><svg class="i" aria-hidden="true"><use href="#download"/></svg>Tải lên cho nhóm</button>
+    <button class="btn" id="copy-slack" data-staff><svg class="i" aria-hidden="true"><use href="#copy"/></svg>Copy Message</button>
+    <button class="btn ghost" data-layout="results" title="Kéo thả, thêm, bỏ khung trên trang này"><svg class="i" aria-hidden="true"><use href="#grid"/></svg>Bố cục</button>
+    <button class="btn" id="export" data-staff><svg class="i" aria-hidden="true"><use href="#download"/></svg>Xuất Excel</button>
+  </div>
+  <div id="results-body"><div class="empty" style="margin-top:12px">Chưa có kết quả – vào “Chạy dữ liệu”.</div></div>
+</section>
+
+<section id="perf">
+  <div class="pf-sticky">
+    <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+      <div><h1>Performance Review</h1><p class="sub" style="margin:0" id="pf-sub">Thực tế theo khung thời gian so với target của tháng.</p></div>
+      <span style="flex:1"></span>
+      <button class="btn" data-layout="perf" title="Kéo thả, thêm, bỏ khung trên trang này"><svg class="i" aria-hidden="true"><use href="#grid"/></svg>Bố cục</button>
+    </div>
+    <div class="filters" style="margin-top:12px" id="pf-filters">
+      <div><label id="pf-pic-l">PIC</label><details id="pf-pic" class="msel" aria-labelledby="pf-pic-l"><summary>Đang tải…</summary></details></div>
+      <div><label for="pf-start">Từ ngày</label><input type="date" id="pf-start"></div>
+      <div><label for="pf-end">Đến ngày</label><input type="date" id="pf-end"></div>
+      <div><label id="pf-leader-l">Sales Leader</label><details id="pf-leader" class="msel" aria-labelledby="pf-leader-l"><summary>Tất cả</summary></details></div>
+      <div><label id="pf-pl-l">Product line</label><details id="pf-pl" class="msel" aria-labelledby="pf-pl-l"><summary>Tất cả</summary></details></div>
+      <div><label id="pf-sku-l">SKU</label><details id="pf-sku" class="msel" aria-labelledby="pf-sku-l"><summary>Tất cả</summary></details></div>
+    </div>
+    <div id="pf-tiles" style="margin-top:12px"></div>
+  </div>
+  <div id="pf-body" style="margin-top:12px"><div class="empty">Chưa có dữ liệu – chạy dữ liệu trước.</div></div>
+</section>
+
+<section id="hourly">
+  <div class="pf-sticky">
+    <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+      <div><h1>Hourly</h1><p class="sub" style="margin:0" id="hr-sub">Hour-to-date theo giờ · time gone tính trên 24h.</p>
+        <p class="muted" id="hr-src" style="font-size:12px;margin:2px 0 0"></p></div>
+      <span style="flex:1"></span>
+      <button class="btn" id="hr-pick" title="Chọn file usa_amz_sso_hourly -- usa.xlsx, hoặc shortcut .url của file trên SharePoint (Add shortcut to My files)"><svg class="i" aria-hidden="true"><use href="#file"/></svg>Chọn file hourly…</button>
+      <button class="btn" id="hr-reload" title="Đọc lại file hourly (file SharePoint: tải về ngay)"><svg class="i" aria-hidden="true"><use href="#refresh"/></svg>Làm mới</button>
+      <button class="btn" data-layout="hourly" title="Kéo thả, thêm, bỏ khung trên trang này"><svg class="i" aria-hidden="true"><use href="#grid"/></svg>Bố cục</button>
+    </div>
+    <div class="filters" style="margin-top:12px" id="hr-filters">
+      <div><label id="hr-pic-l">PIC</label><details id="hr-pic" class="msel" aria-labelledby="hr-pic-l"><summary>Đang tải…</summary></details></div>
+      <div><label for="hr-start">Từ ngày</label><input type="date" id="hr-start"></div>
+      <div><label for="hr-end">Đến ngày</label><input type="date" id="hr-end"></div>
+      <div><label id="hr-quick-l">Chọn nhanh</label><div class="chips" id="hr-quick" role="group" aria-labelledby="hr-quick-l" title="Hôm nay = ngày cuối trong file hourly"><button type="button" data-hrp="yd">Hôm qua</button><button type="button" data-hrp="td">Hôm nay</button><button type="button" data-hrp="l3d" title="3 ngày gần nhất">L3D</button><button type="button" data-hrp="l7d" title="7 ngày gần nhất">L7D</button><button type="button" data-hrp="wk">Tuần này</button><button type="button" data-hrp="mo">Tháng này</button></div></div>
+      <div><label id="hr-leader-l">Sales Leader</label><details id="hr-leader" class="msel" aria-labelledby="hr-leader-l"><summary>Tất cả</summary></details></div>
+      <div><label id="hr-pl-l">Product line</label><details id="hr-pl" class="msel" aria-labelledby="hr-pl-l"><summary>Tất cả</summary></details></div>
+      <div><label id="hr-sku-l">SKU</label><details id="hr-sku" class="msel" aria-labelledby="hr-sku-l"><summary>Tất cả</summary></details></div>
+    </div>
+    <div id="hr-tiles" style="margin-top:12px"></div>
+  </div>
+  <div id="hr-body" style="margin-top:12px"><div class="empty">Chưa có dữ liệu – chạy dữ liệu trước.</div></div>
+</section>
+
+<section id="dashboard">
+  <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+    <div><h1>Dashboard đội</h1><p class="sub" style="margin:0" id="db-sub">So sánh các PIC – mỗi người được đo so với target của chính họ.</p></div>
+    <span style="flex:1"></span>
+    <button class="btn" data-layout="dashboard" title="Kéo thả, thêm, bỏ khung trên trang này"><svg class="i" aria-hidden="true"><use href="#grid"/></svg>Bố cục</button>
+    <button class="btn" id="db-weights-btn" data-lead>Trọng số điểm</button>
+    <button class="btn primary" id="db-review-btn" data-lead><svg class="i" aria-hidden="true"><use href="#spark"/></svg>Nhận xét bởi Claude</button>
+  </div>
+  <div id="db-weights" class="card hidden" style="margin-top:12px"></div>
+  <div id="db-body" style="margin-top:12px"><div class="empty">Chưa có dữ liệu – chạy dữ liệu trước.</div></div>
+</section>
+
+<section id="present">
+  <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+    <div><h1>Trình chiếu</h1><p class="sub" style="margin:0">Chọn nội dung, tạo slide từ kết quả chạy, sửa với Claude rồi trình chiếu ngay trong app. Có màn hình phụ: slide toàn màn hình ở màn hình phụ, ghi chú ở màn hình này.</p></div>
+    <span style="flex:1"></span>
+    <button class="btn primary" id="dk-play" disabled><svg class="i" aria-hidden="true"><use href="#play"/></svg>Bắt đầu trình chiếu</button>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><h2 style="margin:0">Nội dung</h2><span class="muted" style="font-size:12px">Chọn các mục đưa vào bài</span></div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px"><div class="chips" role="group" id="dk-cats" aria-label="Nội dung"></div>
+      <span style="flex:1"></span><button class="btn" id="dk-build"><svg class="i" aria-hidden="true"><use href="#refresh"/></svg>Tạo slide</button></div>
+  </div>
+  <div id="dk-body" style="margin-top:12px"><div class="empty">Chưa có dữ liệu – chạy dữ liệu trước.</div></div>
+</section>
+
+<section id="review">
+  <h1>Rà soát logic</h1>
+  <p class="sub">Claude soát lỗ hổng logic sau mỗi lần chạy + so góp ý của bạn với logic hiện tại. Không có gì tự áp dụng — bạn duyệt từng đề xuất.</p>
+  <div id="review-body"></div>
+</section>
+
+<section id="lessons">
+  <h1>Bài học & Lịch sử</h1>
+  <p class="sub">Bài học đã duyệt được gửi kèm cho Claude mỗi lần chạy. Mỗi phiên bản logic là một file Excel – có thể quay lại.</p>
+  <div class="grid g2">
+    <div class="card"><h2>Bài học đang dùng</h2><div id="lessons-list"></div></div>
+    <div class="card"><h2>Phiên bản logic</h2><div id="versions"></div><h2 style="margin-top:12px">Lịch sử chạy</h2><div id="runs"></div></div>
+  </div>
+</section>
+
+<section id="settings">
+  <h1>Cài đặt</h1>
+  <div class="tabs" role="tablist" id="set-tabs" aria-label="Mục cài đặt">
+    <button type="button" role="tab" id="set-tab-team" aria-controls="set-team" data-stab="team" aria-selected="true">Nhóm</button>
+    <button type="button" role="tab" id="set-tab-gy" aria-controls="set-gy" data-stab="gy" aria-selected="false">Góp ý</button>
+    <button type="button" role="tab" id="set-tab-claude" aria-controls="set-claude" data-stab="claude" aria-selected="false" data-lead>Claude</button>
+    <button type="button" role="tab" id="set-tab-data" aria-controls="set-data" data-stab="data" aria-selected="false" data-lead>Dữ liệu</button>
+    <button type="button" role="tab" id="set-tab-ver" aria-controls="set-ver" data-stab="ver" aria-selected="false">Phiên bản</button>
+  </div>
+
+  <div class="tabpanel on" role="tabpanel" id="set-team" aria-labelledby="set-tab-team">
+  <p class="sub">Tài khoản nhóm và báo cáo đã tải lên.</p>
+  <div class="card" id="team-card" style="margin-bottom:12px"></div>
+  <div class="card" id="up-card" data-lead></div>
+  </div>
+
+  <div class="tabpanel" role="tabpanel" id="set-gy" aria-labelledby="set-tab-gy">
+  <p class="sub">Báo lỗi và đề xuất về app – Lead duyệt từng mục.</p>
+  <div class="card" id="gy-card"><div class="muted" style="font-size:13px">Đăng nhập nhóm để xem góp ý.</div></div>
+  </div>
+
+  <div class="tabpanel" role="tabpanel" id="set-claude" aria-labelledby="set-tab-claude" data-lead>
+  <p class="sub">Kết nối Claude Code và ghi chú Claude đọc ở mọi lần chạy.</p>
+  <div class="grid g2">
+    <div class="card">
+      <h2>Claude Code</h2>
+      <div id="cc-checks"></div>
+      <div id="cc-stats"></div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn primary hidden" id="cc-install"><svg class="i" aria-hidden="true"><use href="#download"/></svg>Cài Claude Code</button>
+        <button class="btn primary hidden" id="cc-login"><svg class="i" aria-hidden="true"><use href="#play"/></svg>Đăng nhập Claude Code</button>
+        <button class="btn" id="cc-recheck2"><svg class="i" aria-hidden="true"><use href="#refresh"/></svg>Kiểm tra lại</button>
+      </div>
+      <p class="muted hidden" id="cc-hint" style="font-size:12px"></p>
+      <p class="muted" style="font-size:12px;margin-bottom:0">Khi Claude không sẵn sàng, app vẫn chạy rule và hiển thị cảnh báo; phần Insight / To-do / Rà soát logic sẽ trống. Dữ liệu gửi cho Claude chỉ là bảng tóm tắt alert, qua tài khoản Claude Code của bạn.</p>
+    </div>
+    <div class="card">
+      <h2>Ghi chú cho Claude</h2>
+      <p class="muted" style="font-size:12px;margin-top:0">Claude đọc ghi chú này ở <b>mọi</b> lần chạy (phân tích, biên tập, rà soát logic, nhận xét đội, viết lại tin nhắn) và ưu tiên nó hơn các gợi ý khác.</p>
+      <textarea id="claude-note" style="min-height:150px" maxlength="4000" placeholder="VD: Camp Brand là camp phòng thủ – không bao giờ đề xuất pause. Tháng này ưu tiên GMV hơn TACoS."></textarea>
+      <div style="display:flex;gap:8px;align-items:center;margin-top:8px"><span class="muted" id="note-count" style="font-size:12px"></span><span style="flex:1"></span><button class="btn primary" id="note-save">Lưu ghi chú</button></div>
+    </div>
+  </div>
+  </div>
+
+  <div class="tabpanel" role="tabpanel" id="set-data" aria-labelledby="set-tab-data" data-lead>
+  <p class="sub">Tài khoản Ads, email → PIC, dữ liệu lịch sử và bộ nhớ của app.</p>
+  <div class="grid g2">
+    <div class="card">
+      <h2>Tài khoản Ads</h2>
+      <label for="ads-account">Chỉ lấy dòng ads_camp của account</label>
+      <select id="ads-account"><option value="">Tự chọn (account nhiều dòng nhất)</option></select>
+      <p class="muted" style="font-size:12px;margin-bottom:0">Đổi xong bấm Chạy lại để áp dụng.</p>
+    </div>
+    <div class="card">
+      <h2>Bộ nhớ của app</h2>
+      <p class="muted" style="font-size:12px;margin-top:0">Lịch sử chạy, bài học, góp ý, đề xuất và các phiên bản logic – app dùng để chạy tốt hơn lần sau.</p>
+      <div id="mem-info"><div class="muted" style="font-size:13px">Đang đọc…</div></div>
+      <div class="grid g2" style="margin-top:10px;align-items:end">
+        <div><label for="mem-limit">Giới hạn (MB, tối đa 1024)</label><input type="text" inputmode="numeric" id="mem-limit"></div>
+        <label style="display:flex;gap:6px;align-items:center;margin:0;font-weight:500;color:var(--fg)"><input type="checkbox" id="mem-auto"> Tự ghi đè lần chạy cũ nhất khi vượt giới hạn</label>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" id="mem-save">Lưu</button><button class="btn" id="mem-prune">Dọn ngay</button></div>
+      <p class="muted" style="font-size:12px;margin-bottom:0">Khi dọn chỉ xoá các <b>lần chạy cũ nhất</b>; không bao giờ xoá lần chạy mới nhất, bài học, phiên bản logic, văn phong hay ghi chú.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h2>Email → PIC</h2>
+    <p class="muted" style="font-size:12px;margin-top:0">Activity Log ghi người thao tác bằng email. App tự đoán theo tên PIC; sửa nếu sai.</p>
+    <div id="emailmap"><div class="muted" style="font-size:13px">Chạy dữ liệu một lần để thấy danh sách email.</div></div>
+    <div style="margin-top:10px"><button class="btn primary" id="email-save">Lưu</button></div>
+  </div>
+
+  <div class="card" style="margin-top:12px" id="hist-card">
+    <h2>Dữ liệu lịch sử (3 tháng)</h2>
+    <p class="muted" style="font-size:12px;margin-top:0">Mỗi lần Chạy, app lưu số liệu theo ngày của <b>raw_sso_us</b>, <b>ads_camp</b>, <b>INELIGIBLE ASIN</b> và giữ 3 tháng gần nhất. File mới chỉ cần ~45 ngày: các ngày cũ hơn lấy từ đây (Performance Review, baseline Est GMV lost…). Ngày có trong file mới luôn thay số đã lưu.</p>
+    <div id="hist-info"><div class="muted" style="font-size:13px">Đang đọc…</div></div>
+  </div>
+  </div>
+
+  <div class="tabpanel" role="tabpanel" id="set-ver" aria-labelledby="set-tab-ver">
+  <p class="sub">Phiên bản app và cập nhật.</p>
+  <div class="card" style="max-width:720px">
+    <h2>Phiên bản & cập nhật</h2>
+    <div id="ver-checks"></div>
+    <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <button class="btn" id="upd-check"><svg class="i" aria-hidden="true"><use href="#refresh"/></svg>Kiểm tra cập nhật</button>
+      <button class="btn" id="upd-whatsnew2">Có gì mới?</button>
+      <label style="display:flex;gap:6px;align-items:center;margin:0;font-weight:500;color:var(--fg)"><input type="checkbox" id="auto-upd"> Tự kiểm tra khi mở app và mỗi giờ</label>
+    </div>
+    <p class="muted" style="font-size:12px;margin-bottom:0">Logic, bài học, văn phong và lịch sử lưu trong thư mục dữ liệu người dùng – cập nhật app không làm mất.</p>
+  </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <span id="f-run">Chưa chạy</span>
+  <span id="f-logic"></span>
+  <span id="f-lessons"></span>
+  <button class="btn sm ghost" id="f-version" style="font-size:12px;color:var(--muted)"></button>
+  <span style="flex:1"></span>
+  <span id="cc-foot-usage" class="foot-usage" role="button" tabindex="0" title="Hạn mức Claude Code – bấm để xem chi tiết"></span>
+  <button id="cc-foot-refresh" class="foot-refresh hidden" title="Làm mới hạn mức"><svg class="i" aria-hidden="true"><use href="#refresh"/></svg></button>
+  <span id="cc-foot">Claude Code ● đang kiểm tra</span>
+</footer>
+
+<div class="modal" id="wn" role="dialog" aria-modal="true" aria-labelledby="wntitle">
+  <div class="box">
+    <div style="display:flex;align-items:center"><h2 id="wntitle" style="margin:0"></h2><span style="flex:1"></span><button class="btn sm ghost" id="wn-close" aria-label="Đóng"><svg class="i"><use href="#x"/></svg></button></div>
+    <p class="muted" id="wn-date" style="font-size:12px;margin:2px 0 10px"></p>
+    <div class="markdown" id="wn-notes" data-no-i18n></div>
+    <div id="wn-prev" data-no-i18n></div>
+    <p class="muted" id="wn-stat" style="font-size:12px;margin:10px 0"></p>
+    <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="wn-later">Để sau</button><button class="btn primary" id="wn-install">Tải & cài</button></div>
+  </div>
+</div>
+
+<div class="modal" id="gy" role="dialog" aria-modal="true" aria-labelledby="gy-title">
+  <div class="box">
+    <div style="display:flex;align-items:center"><h2 id="gy-title" style="margin:0">Gửi góp ý</h2><span style="flex:1"></span><button class="btn sm ghost" id="gy-close" aria-label="Đóng"><svg class="i"><use href="#x"/></svg></button></div>
+    <fieldset style="border:0;padding:0;margin:12px 0 8px;display:flex;gap:16px">
+      <legend class="sr-only">Loại</legend>
+      <label style="display:flex;gap:6px;align-items:center;margin:0"><input type="radio" name="gy-kind" value="bug" checked> Báo lỗi</label>
+      <label style="display:flex;gap:6px;align-items:center;margin:0"><input type="radio" name="gy-kind" value="idea"> Góp ý / đề xuất</label>
+    </fieldset>
+    <label for="gy-msg">Nội dung</label>
+    <textarea id="gy-msg" rows="6" maxlength="4000" placeholder="Mô tả lỗi (đang làm gì, thấy gì, mong đợi gì) hoặc ý tưởng của bạn…"></textarea>
+    <div class="gy-imgs" id="gy-imgs"></div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+      <label class="btn sm" style="margin:0"><svg class="i" aria-hidden="true"><use href="#file"/></svg>Đính kèm tệp<input type="file" id="gy-file" class="gy-pick" multiple hidden></label>
+      <span class="muted" style="font-size:12px">hoặc dán ảnh chụp màn hình (Ctrl+V) · tối đa 5 tệp (ảnh, PDF, Word, Excel, PowerPoint, CSV, TXT, ZIP), mỗi tệp ≤ 10 MB</span>
+    </div>
+    <p class="muted" id="gy-ctx" style="font-size:12px;margin:6px 0 12px" data-no-i18n></p>
+    <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="gy-cancel">Huỷ</button><button class="btn primary" id="gy-send">Gửi</button></div>
+  </div>
+</div>
+
+<div class="modal" id="fd" role="dialog" aria-modal="true" aria-labelledby="fd-title">
+  <div class="box" style="width:900px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><h2 id="fd-title" style="margin:0;flex:1;word-break:break-all" data-no-i18n></h2><button class="btn sm ghost" id="fd-close" aria-label="Đóng">✕</button></div>
+    <div id="fd-body"></div>
+  </div>
+</div>
+<div class="popover hidden" id="colpop" role="dialog" aria-label="Thông tin cột"></div>
+<div class="modal login" id="setup" role="dialog" aria-modal="true" aria-labelledby="setup-title">
+  <button class="btn sm ghost login-lang" id="su-lang" data-no-i18n>English</button>
+  <div class="login-wrap">
+    <aside class="login-photo" aria-hidden="true"><img src="login-bg.jpg" alt=""></aside>
+    <section class="login-form">
+      <div class="login-logo"><img src="duck.png" alt="" class="login-duck"><span>PMKT <b>Alert</b></span></div>
+      <div class="login-main">
+      <p class="login-tag">Cảnh báo pacing, to-do và insight hằng ngày cho team Performance Marketing.</p>
+      <h2 id="setup-title">Đăng nhập</h2>
+      <p class="muted login-sub">Dùng tài khoản Lead đã tạo cho bạn.</p>
+      <form id="su-form" novalidate>
+        <label for="su-email">Email</label>
+        <div class="field"><svg class="i" aria-hidden="true"><use href="#mail"/></svg><input type="email" id="su-email" autocomplete="username" placeholder="ten@congty.com" required></div>
+        <label for="su-pw" style="margin-top:12px">Mật khẩu</label>
+        <div class="field"><svg class="i" aria-hidden="true"><use href="#lock"/></svg><input type="password" id="su-pw" autocomplete="current-password" required>
+          <button type="button" class="pw-eye" id="su-eye" aria-label="Hiện mật khẩu" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#eye"/></svg></button></div>
+        <p class="caps hidden" id="su-caps">Caps Lock đang bật</p>
+        <div class="login-err hidden" id="setup-error" role="alert"></div>
+        <button type="submit" class="btn primary login-btn" id="su-signin">Đăng nhập</button>
+      </form>
+      <p class="muted login-help">Chưa có tài khoản hoặc quên mật khẩu? Nhờ Lead tạo hoặc đặt lại trong app (Cài đặt → Nhóm).</p>
+      </div>
+      <p class="muted login-ver" id="su-ver"></p>
+    </section>
+  </div>
+  <div id="setup-done" class="hidden"></div>
+</div>
+
+<div class="modal" id="lay" role="dialog" aria-modal="true" aria-labelledby="lay-title">
+  <div class="box" style="width:900px">
+    <div style="display:flex;align-items:center;gap:8px"><h2 id="lay-title" style="margin:0">Tuỳ chỉnh bố cục</h2><span style="flex:1"></span><button class="btn sm ghost" id="lay-close" aria-label="Đóng"><svg class="i"><use href="#x"/></svg></button></div>
+    <div class="chips" id="lay-pages" role="group" aria-label="Trang" style="margin:10px 0"></div>
+    <p class="muted" style="font-size:12px;margin:0 0 8px">Kéo thả khung để đổi thứ tự · chọn độ rộng (⅓ · ⅖ · ½ · ⅗ · ⅔ · cả hàng) · bấm × để bỏ. Bố cục lưu trên máy này cho cả 3 trang.</p>
+    <div class="lay-grid" id="lay-grid"></div>
+    <h3 style="font-size:13px;margin:14px 0 6px">Thêm khung</h3>
+    <div id="lay-add" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    <div style="display:flex;gap:8px;margin-top:16px"><button class="btn" id="lay-reset">Về mặc định</button><span style="flex:1"></span><button class="btn" id="lay-cancel">Huỷ</button><button class="btn primary" id="lay-save">Lưu bố cục</button></div>
+  </div>
+</div>
+
+<div class="modal" id="ev" role="dialog" aria-modal="true" aria-labelledby="ev-title">
+  <div class="box" style="width:960px">
+    <div style="display:flex;align-items:center;gap:8px"><h2 id="ev-title" style="margin:0">Bằng chứng</h2><span style="flex:1"></span><button class="btn sm ghost" id="ev-close" aria-label="Đóng"><svg class="i"><use href="#x"/></svg></button></div>
+    <div id="ev-tabs" style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0"></div>
+    <div id="ev-body"></div>
+  </div>
+</div>
+
+<div id="fbwrap">
+  <div class="scrim" id="fb-scrim"></div>
+  <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="fbtitle">
+    <div style="display:flex;align-items:center"><h2 id="fbtitle" style="margin:0">Góp ý: chưa hợp lý</h2><span style="flex:1"></span><button class="btn sm ghost" id="fb-close" aria-label="Đóng"><svg class="i"><use href="#x"/></svg></button></div>
+    <div class="card" style="padding:10px"><div class="muted" style="font-size:12px">Dòng output</div><b id="fbrow"></b></div>
+    <div><label>Vấn đề</label><div class="chips" role="group" id="fb-issue"><button aria-pressed="true">Sai nhãn</button><button aria-pressed="false">Sai mức độ</button><button aria-pressed="false">Thiếu bối cảnh</button><button aria-pressed="false">Data sai</button><button aria-pressed="false">Không nên alert</button></div></div>
+    <div><label for="fbexp">Nhãn đúng phải là</label><select id="fbexp"><option value="">— để Claude đề xuất —</option><option>MAINTAIN</option><option>OPTIMIZE</option><option>SCALE UP</option><option>SCALE DOWN</option><option>CUT/OPTIMIZE</option><option>WAIT</option><option>Không cần alert</option></select></div>
+    <div><label for="fbtxt">Vì sao chưa hợp lý?</label><textarea id="fbtxt" placeholder="VD: PL đang hết stock nên không thể scale up"></textarea></div>
+    <p class="muted" style="font-size:12px;margin:0">Claude sẽ so góp ý với logic (Config, Matrix_PL, Logic_Tiers) và đưa đề xuất sửa vào mục Rà soát logic.</p>
+    <span style="flex:1"></span>
+    <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="fb-cancel">Huỷ</button><button class="btn primary" id="fb-send">Gửi góp ý</button></div>
+  </aside>
+</div>
+
+<div class="pv" id="pv" hidden>
+  <div class="pv-main"><div class="stage big" id="pv-stage"></div></div>
+  <aside class="pv-side" aria-label="Màn hình người trình bày">
+    <div class="pv-bar"><b class="num" id="pv-count"></b><span class="num" id="pv-timer">00:00</span></div>
+    <div class="pv-next"><div class="muted" style="font-size:12px;margin-bottom:4px">Tiếp theo</div><div class="stage" id="pv-next"></div></div>
+    <textarea class="pv-notes" id="pv-notes" data-notes aria-label="Ghi chú người trình bày" placeholder="Ghi chú – gõ để sửa, tự lưu."></textarea>
+    <div class="pv-ctl"><button class="btn" id="pv-prev" aria-label="Slide trước">‹</button><button class="btn" id="pv-next-btn" aria-label="Slide sau">›</button>
+      <span style="flex:1"></span><button class="btn" id="pv-end"><svg class="i" aria-hidden="true"><use href="#x"/></svg>Kết thúc</button></div>
+    <p class="muted pv-keys">← → chuyển slide · bấm số liệu để mở chi tiết · N ghi chú · Esc kết thúc</p>
+  </aside>
+</div>
+
+<script src="shim.js"></script>
+<script src="vendor/chart.umd.min.js"></script>
+<script src="deck.js"></script>
+<script src="i18n_en.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

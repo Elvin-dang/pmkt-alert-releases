@@ -1,0 +1,76 @@
+/* PMKT Alert web viewer: the Windows app's styles.css + this file. Only reading is on the web, and it fits a phone. */
+
+/* --- desktop-only controls (running, uploading, files on disk, Claude, updates, page layout editing) --- */
+#cc-pill, #cc-recheck, #gy-open, header .zoom, #upd-banner, #f-version, #cc-foot-usage, #cc-foot-refresh, #cc-foot, #f-lessons, #nav-mini,
+nav [data-go="run"], nav [data-go="review"], nav [data-go="lessons"], nav [data-go="present"],
+#save-pmkt, #open-pmkt, #export, #copy-slack, #hr-pick, [data-layout], [data-lead],
+#set-tab-gy, #set-tab-claude, #set-tab-data, #set-tab-ver, #team-forget, details:has(> #team-forget) { display: none !important; }
+
+/* --- loading screen while Python starts (shim.js) --- */
+#web-splash { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; background: var(--bg); color: var(--fg);
+  transition: opacity .35s ease; padding: 24px; text-align: center; }
+#web-splash.done { opacity: 0; pointer-events: none; }
+#web-splash .box { display: grid; gap: 14px; justify-items: center; max-width: 320px; }
+#web-splash img { width: 72px; height: 72px; border-radius: 16px; }
+#web-splash .name { font-size: 20px; font-weight: 700; } #web-splash .name b { color: var(--primary); }
+#web-splash .bar { width: 180px; height: 4px; border-radius: 2px; background: var(--muted-bg); overflow: hidden; }
+#web-splash .bar::after { content: ""; display: block; width: 40%; height: 100%; background: var(--primary); border-radius: 2px;
+  animation: web-slide 1.2s ease-in-out infinite; }
+#web-splash.err .bar, #web-splash-retry[hidden] { display: none; }
+#web-splash #web-splash-text { color: var(--muted); font-size: 13px; min-height: 2.6em; }
+#web-splash.err #web-splash-text { color: var(--high); }
+@keyframes web-slide { from { transform: translateX(-100%); } to { transform: translateX(260%); } }
+@media (prefers-reduced-motion: reduce) { #web-splash .bar::after { animation: none; width: 100%; opacity: .5; } }
+
+/* --- phone / small tablet --- */
+@media (max-width: 760px) {
+  body { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; height: 100dvh; font-size: 14px; }
+  header { grid-column: 1; padding: 0 12px; padding-top: env(safe-area-inset-top); min-height: 48px; gap: 6px; }
+  header .run-meta { display: none; }
+  header #role-badge { max-width: 46vw; }
+  header .brand span { display: inline; }
+  footer { display: none !important; }
+
+  /* the menu becomes a tab bar at the bottom */
+  nav { grid-row: 3; flex-direction: row; justify-content: space-around; gap: 0; padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
+    border-right: 0; border-top: 1px solid var(--border); overflow-x: auto; }
+  nav .sep { display: none; }
+  nav button { flex: 1 1 0; min-width: 64px; flex-direction: column; gap: 2px; padding: 6px 2px; font-size: 11px; text-align: center; justify-content: center; }
+  nav button svg.i { width: 20px; height: 20px; }
+  nav button .nl { display: -webkit-box !important; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; max-width: 100%; line-height: 1.15; }
+  nav .count { position: absolute; margin: 0 0 0 18px; }
+  nav button { position: relative; }
+
+  main { grid-row: 2; grid-column: 1; min-height: 0; padding: 12px 12px 24px; -webkit-overflow-scrolling: touch; }
+  h1 { font-size: 20px; }
+  .pf-sticky, .pf-sticky.unpin { position: static; box-shadow: none; }
+  .pf-sticky::before { display: none; }
+
+  /* filters: two per row, full width */
+  .filters { display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .filters > div:has(> input[type=search]) { grid-column: 1 / -1; }
+  .filters > div, .filters select, .filters input, .filters .msel { width: 100% !important; min-width: 0; }
+  #results > div:first-child > div[style*="width:240px"] { width: 100% !important; }
+  #report-list { max-width: 100% !important; flex: 1 1 100%; }
+
+  /* tables scroll sideways inside their card; no drag-resize on touch */
+  .tbl { resize: none; max-height: 70dvh; }
+  table { font-size: 12px; }
+
+  /* tiles / grids collapse */
+  .grid { grid-template-columns: 1fr !important; }
+  .grid.pf-tiles, .pf-tiles, .td-tabs, .grid:has(> .kpi) { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px; }
+  .kpi { padding: 10px 12px; } .kpi .val { font-size: 20px; }
+  .lw { grid-column: 1 / -1 !important; }
+
+  /* dialogs fill the screen */
+  .modal .box table { display: block; max-width: 100%; overflow-x: auto; }
+  .modal .box td, .modal .box th { word-break: break-word; }
+  .modal.on { grid-template-columns: 100%; }
+  .modal .box { overflow-x: hidden; width: 100% !important; max-width: 100vw !important; max-height: 100dvh; height: 100dvh; border-radius: 0; padding: 14px; }
+  .login-form { padding: 24px 20px calc(24px + env(safe-area-inset-bottom)); }
+  .popover { left: 8px !important; right: 8px; width: auto; }
+
+  .toast { left: 12px; right: 12px; max-width: none; bottom: calc(72px + env(safe-area-inset-bottom)); }
+  input, select, textarea { font-size: 16px; } /* iOS: no zoom on focus */
+}
