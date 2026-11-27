@@ -3373,9 +3373,9 @@ function renderHourly() {
   const tr = d.traffic_hours, trMiss = tr.missing.length ? ` · <b>File hourly chưa có cột</b> ${tr.missing.map((k) => tr.columns[k].join(" / ")).join(" · ")}.` : "";
   $("#hr-body").innerHTML = layoutHtml("hourly", {  // feedback #44: cards placed by the layout editor (Bố cục)
     "h-c4": chartCard(`Impression · Glance view · Click theo giờ${note}`, "hr-c4", `Cột: Impression (SP + SB + SD) · đường: Glance view và Click (SP + SB + SD), trục phải.${trMiss}`),
-    "h-c1": chartCard(`GMV · Ads Spend · TACOS theo giờ${note}`, "hr-c1", "Cột: GMV và Ads Spend từng khung giờ · đường: TACOS (trục phải) – giờ nào tiêu nhiều mà ra ít GMV."),
+    "h-c1": chartCard(`GMV · Ads Spend · TACOS theo giờ${note}`, "hr-c1", "Cột: GMV và Ads Spend từng khung giờ · đường: TACOS (trục phải) – giờ nào tiêu nhiều mà ra ít GMV. Trục ngang: giờ US (Pacific), dòng dưới là giờ VN."),
     "h-c2": chartCard(`Lũy kế so với target${note}`, "hr-c2", "GMV, RS, Ads Spend cộng dồn đến hết từng khung giờ, tính theo % target của khung ngày; đường đứt = time gone (24h). Spend vượt time gone nhanh hơn GMV = đang tiêu trước doanh thu."),
-    "h-c3": chartCard(`So với kỳ trước theo giờ${note}`, "hr-c3", pv ? `Nét liền: ${range} · nét đứt: ${pvL} (cùng số ngày ngay trước).` : "File hourly không có data của kỳ trước để so sánh."),
+    "h-c3": chartCard(`So với kỳ trước theo giờ${note}`, "hr-c3", pv ? `Nét liền: ${range} · nét đứt: ${pvL} (cùng số ngày ngay trước). Ads Spend theo trục phải.` : "File hourly không có data của kỳ trước để so sánh."),
     "h-cpc": chartCard(`CPC theo giờ so với kỳ trước${note}`, "hr-cpc", `${pv ? `Nét liền: ${range} · nét đứt: ${pvL}. ` : ""}CPC = Ads Spend ÷ Click (SP + SB + SD) của từng khung giờ; khung giờ 0 click để trống.`),  // feedback #85
     "h-sku": card(`Performance theo giờ · SKU${note} <span class="muted" style="font-weight:400;font-size:13px">${range}</span>`, mSku.tabs + mSku.html, search("sku")),
     "h-pl": card(`Performance theo giờ · Product line${note} <span class="muted" style="font-weight:400;font-size:13px">${range}</span>`, mPl.tabs + mPl.html, search("pl")),
@@ -3434,7 +3434,12 @@ function drawHourCharts(d) {
   const live = d.filters.end === d.last.date ? d.last.hour : 23;  // hours after the last data hour have no data yet
   const at = (hours, k) => hours.map((c) => (c ? c[k] : 0));
   const money0 = { ticks: { callback: (v) => money(v) }, beginAtZero: true };
-  drawChart("hr-c1", { type: "bar", data: { labels, datasets: [
+  // feedback #86: VN time under each US hour. shortcut: assumes the file's local time is US Pacific (Amazon US), DST taken
+  // from the range's end date; upgrade if a team's hourly file uses another zone.
+  const t = new Date(`${d.filters.end}T12:00:00Z`), tz = (z) => new Date(t.toLocaleString("en-US", { timeZone: z }));
+  const vn = Math.round((tz("Asia/Ho_Chi_Minh") - tz("America/Los_Angeles")) / 36e5);  // 15 (PST) or 14 (PDT)
+  const vnLabels = labels.map((l, h) => [l, `${String((h + vn) % 24).padStart(2, "0")}h VN`]);
+  drawChart("hr-c1", { type: "bar", data: { labels: vnLabels, datasets: [
     { label: "GMV", data: at(d.total_hours.hours, "gmv"), backgroundColor: pal[0], borderRadius: 3, yAxisID: "y", order: 2 },
     { label: "Ads Spend", data: at(d.total_hours.hours, "spend"), backgroundColor: pal[1], borderRadius: 3, yAxisID: "y", order: 2 },
     { type: "line", label: "TACOS", data: d.total_hours.hours.map((c) => (c ? c.tacos : null)), borderColor: pal[2], backgroundColor: pal[2], borderWidth: 2, pointRadius: 2, yAxisID: "y2", order: 1, spanGaps: true }] },
@@ -3471,8 +3476,10 @@ function drawHourCharts(d) {
   if (!pv) { emptyChart("hr-c3", "Chưa có data kỳ trước trong file hourly."); return; }
   const cur = (k) => d.total_hours.hours.map((c, h) => (h > live ? null : c ? c[k] : 0));
   drawChart("hr-c3", { type: "line", data: { labels, datasets: [ln("GMV", cur("gmv"), pal[0]), ln("GMV kỳ trước", at(pv.hours, "gmv"), pal[0], [5, 4]),
-    ln("Ads Spend", cur("spend"), pal[1]), ln("Ads Spend kỳ trước", at(pv.hours, "spend"), pal[1], [5, 4])] },
-  options: { plugins: { tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${money(c.raw)}` } } }, scales: { x: { grid: { display: false } }, y: money0 } } });
+    // feedback #87: Ads Spend is far smaller than GMV – own scale on the right axis so its curve is readable
+    { ...ln("Ads Spend", cur("spend"), pal[1]), yAxisID: "y2" }, { ...ln("Ads Spend kỳ trước", at(pv.hours, "spend"), pal[1], [5, 4]), yAxisID: "y2" }] },
+  options: { plugins: { tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${money(c.raw)}` } } },
+    scales: { x: { grid: { display: false } }, y: money0, y2: { ...money0, position: "right", grid: { display: false } } } } });
 }
 function hrFilterRows(table) {
   const body = $(`#hr-${table}-body`), q = ((S.hrQ || {})[table] || "").trim().toLowerCase();
