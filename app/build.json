@@ -1,7 +1,7 @@
 {
- "version": "1.9.0",
+ "version": "1.9.1",
  "pyodide": "https://cdn.jsdelivr.net/pyodide/v0.27.7/full/",
- "app": "bundle/app-15158e608e25.zip",
+ "app": "bundle/app-37ec4313d551.zip",
  "wheels": [
   "wheels/et_xmlfile-2.0.0-py3-none-any.whl",
   "wheels/openpyxl-3.1.5-py2.py3-none-any.whl"
